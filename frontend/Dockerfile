@@ -11,6 +11,8 @@ ENV PATH /app/node_modules/.bin:$PATH
 COPY package.json /app/package.json
 RUN npm install
 RUN npm install react-scripts@3.0.1 -g
+# Serve static webpage
+RUN npm install -g serve
 
-# start app
-CMD ["npm", "start"]
+# Copy the current directory contents into the container at /app
+COPY . /app

@@ -2,30 +2,37 @@ version: "3"
 services:
 
   sudoku-frontend:
-    build: ./
-    image: frontend:latest
+    build: 
+      context: ./frontend
+    image: sudoku-frontend:latest
     depends_on:
       - sudoku-solver
     volumes:
-      - .:/app
+      - ./frontend:/app
       - '/app/node_modules' 
     ports:
       - '3001:3000'
     environment:
       - NODE_ENV=development
+      - REACT_APP_SERVER_HOST=localhost
+      - REACT_APP_SERVER_PORT=5001
     command: ["npm", "start"]
 
   sudoku-solver:
     build: 
       context: ./server
-    image: server:latest
+    image: sudoku-server:latest
     ports:
       - '5001:5000'
     volumes:
       - ./server/:/app
     # --host=0.0.0.0 makes the server publicly available
+    # This is necessary because it is a running on a docker container and we
+    # are making requests from other docker containers or the host
     # http://flask.pocoo.org/docs/0.12/quickstart/
     command: [ "sh", "-c", "flask run --host=0.0.0.0" ]
     environment:
       - FLASK_ENV=development
       - FLASK_APP=app.py
+      - FRONTEND_HOST=localhost
+      - FRONTEND_PORT=3001

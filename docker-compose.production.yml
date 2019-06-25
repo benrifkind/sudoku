@@ -1,0 +1,28 @@
+version: "3"
+services:
+
+  sudoku-frontend:
+    build: 
+      context: ./frontend
+    image: frontend-production:latest
+    depends_on:
+      - sudoku-solver
+    ports:
+      - '8080:5000'
+    environment:
+      - NODE_ENV=development
+      - REACT_APP_SERVER_HOST=sudoku.benrifkind.com
+      - REACT_APP_SERVER_PORT=5001
+    command: [sh, -c, "npm run build && serve -s build"]
+
+  sudoku-solver:
+    build: 
+      context: ./server
+    image: server-production:latest
+    ports:
+      - '5001:8080'  # this port has to be open in the aws console
+    command: [ "waitress-serve", "app:app" ]
+    environment:
+      - PYTHONPATH=.
+      - FRONTEND_HOST=sudoku.benrifkind.com
+      - FRONTEND_PORT=8080 
