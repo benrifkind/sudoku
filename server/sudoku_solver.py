@@ -1,6 +1,6 @@
 import math
 from copy import deepcopy
-from queue import Queue
+from queue import LifoQueue
 from typing import Dict, Generator, List, Optional, Set, Tuple
 
 Board = List[List[str]]
@@ -38,6 +38,9 @@ class SudokuSolver:
             for i in range(dim)
             for j in range(dim)
         }
+
+    def __str__(self) -> str:
+        return "\n".join(["|".join(row) for row in self.board])
 
     def get_row(self, i: int) -> Set[str]:
         """ Get the values already set in this row """
@@ -121,7 +124,7 @@ class SudokuSolver:
             yield self.__class__(board=board_c)
 
     def solve(self) -> Optional["SudokuSolver"]:
-        queue: Queue["SudokuSolver"] = Queue()
+        queue: LifoQueue["SudokuSolver"] = LifoQueue()
         queue.put(self)
 
         while not queue.empty():
@@ -132,7 +135,7 @@ class SudokuSolver:
                 queue.put(board)
 
     def solve_all(self) -> Generator["SudokuSolver", None, None]:
-        queue: Queue["SudokuSolver"] = Queue()
+        queue: LifoQueue["SudokuSolver"] = LifoQueue()
         queue.put(self)
 
         while not queue.empty():

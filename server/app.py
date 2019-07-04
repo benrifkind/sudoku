@@ -39,4 +39,6 @@ def solve():
 
 @app.route("/generate/<string:dimension>")
 def generate(dimension: str):
-    return jsonify(sudoku_generator.generate_sudoku_problem(quadrant_dimension=dimension))
+    return jsonify(
+        sudoku_generator.generate_sudoku_problem(quadrant_dimension=dimension)
+    )

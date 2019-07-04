@@ -64,10 +64,12 @@ class SudokuUnSolver:
 
 def generate_sudoku_problem(quadrant_dimension: str) -> Board:
     solutions = {
-        "2": [['1', '2', '3', '4'],
-              ['3', '4', '1', '2'],
-              ['2', '1', '4', '3'],
-              ['4', '3', '2', '1']],
+        "2": [
+            ["1", "2", "3", "4"],
+            ["3", "4", "1", "2"],
+            ["2", "1", "4", "3"],
+            ["4", "3", "2", "1"],
+        ],
         "3": [
             ["9", "2", "6", "3", "1", "8", "4", "7", "5"],
             ["5", "4", "8", "6", "7", "9", "2", "3", "1"],
@@ -78,7 +80,7 @@ def generate_sudoku_problem(quadrant_dimension: str) -> Board:
             ["7", "9", "4", "2", "3", "1", "5", "8", "6"],
             ["2", "8", "3", "5", "6", "7", "1", "9", "4"],
             ["6", "1", "5", "9", "8", "4", "3", "2", "7"],
-        ]
+        ],
     }
     unsolver = SudokuUnSolver(solved_board=solutions[quadrant_dimension])
     return unsolver.unsolve()

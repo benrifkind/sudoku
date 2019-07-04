@@ -31,6 +31,20 @@ def test_no_solution():
     assert sudoku.solve() is None
 
 
+def test_incorrect_board():
+    board = [
+        ["1", "1", "1", "1"],
+        ["", "", "", "4"],
+        ["4", "", "3", "1"],
+        ["3", "2", "4", ""],
+    ]
+    sudoku = SudokuSolver(board=board)
+    solution = [_ for _ in sudoku.solve_all()]
+    assert len(solution) == 0
+
+    assert sudoku.solve() is None
+
+
 def test_multiple_solutions():
     board = [
         ["", "4", "", "1"],
@@ -40,16 +54,16 @@ def test_multiple_solutions():
     ]
     solutions = [
         [
-            ["2", "4", "3", "1"],
-            ["1", "3", "4", "2"],
-            ["3", "1", "2", "4"],
-            ["4", "2", "1", "3"],
-        ],
-        [
             ["3", "4", "2", "1"],
             ["1", "2", "4", "3"],
             ["2", "1", "3", "4"],
             ["4", "3", "1", "2"],
+        ],
+        [
+            ["2", "4", "3", "1"],
+            ["1", "3", "4", "2"],
+            ["3", "1", "2", "4"],
+            ["4", "2", "1", "3"],
         ],
     ]
     sudoku = SudokuSolver(board=board)
@@ -90,6 +104,24 @@ def test_solver():
     assert len(solutions) == 1
     assert solutions[0].board == solution
     assert sudoku.solve().board == solution
+
+
+def test_non_unique_solver():
+    # just test that this completes for a non unique board
+    board = [
+        ["1", "", "", "", "", "", "", "", ""],
+        ["", "2", "", "", "", "", "", "", ""],
+        ["", "", "3", "", "", "", "", "", ""],
+        ["", "", "", "", "", "", "", "", ""],
+        ["", "", "", "", "", "", "", "", ""],
+        ["", "", "", "", "", "", "", "", ""],
+        ["", "", "", "", "", "", "", "", ""],
+        ["", "", "", "", "", "", "", "", ""],
+        ["", "", "", "", "", "", "", "", ""],
+    ]
+    sudoku = SudokuSolver(board=board)
+    solution = sudoku.solve()
+    assert all(r != "" for row in solution.board for r in row)
 
 
 def test_getters():
